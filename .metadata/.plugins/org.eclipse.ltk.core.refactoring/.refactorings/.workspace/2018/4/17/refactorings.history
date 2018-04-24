@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;esp32&apos; to &apos;monitor&apos;" description="Rename resource &apos;esp32&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/esp32" name="monitor" stamp="1524526920077" updateReferences="true"/>
+</session>

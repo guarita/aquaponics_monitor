@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;esp32/esp32.ino&apos; to &apos;Monitor.ino&apos;" description="Rename resource &apos;esp32.ino&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="esp32.ino" name="Monitor.ino" stamp="1524526908313" updateReferences="true"/>
+</session>

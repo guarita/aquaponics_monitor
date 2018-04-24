@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;esp32/teperatureService.h&apos; to &apos;temperatureService.h&apos;" description="Rename resource &apos;teperatureService.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="teperatureService.h" name="temperatureService.h" stamp="1524005477490" updateReferences="true"/>
+</session>

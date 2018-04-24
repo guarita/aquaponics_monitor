@@ -1,0 +1,30 @@
+#ifdef __IN_ECLIPSE__
+//This is a automatic generated file
+//Please do not modify this file
+//If you touch this file your change will be overwritten during the next build
+//This file has been generated on 2018-04-17 20:12:54
+
+#include "Arduino.h"
+#include "temperatureService.h"
+#include <Arduino.h>
+#include <U8g2lib.h>
+#include <SPI.h>
+#include <Wire.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
+
+void u8g2_prepare(void) ;
+void draw(void) ;
+void setup_wifi() ;
+void mqttpublish(float t1, float t2) ;
+void callback(char* topic, byte* payload, unsigned int length) ;
+void reconnect() ;
+void draw_loop(void *params) ;
+void publish_loop(void *params) ;
+void setup(void) ;
+void loop(void) ;
+
+#include "esp32.ino"
+
+
+#endif
