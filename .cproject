@@ -33,20 +33,20 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp32/libraries/SPI/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp32/libraries/Wire}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp32/libraries/Wire/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/core/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/core/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/DallasTemperature}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/OneWire}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/PubSubClient}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/PubSubClient/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/SPI}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/SPI/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/U8g2}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/U8g2/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/WiFi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/WiFi/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/Wire}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/Wire/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/DallasTemperature}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/OneWire}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/PubSubClient}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/PubSubClient/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/SPI/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/U8g2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/U8g2/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/WiFi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/WiFi/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/Wire}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/Wire/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/DallasTemperature}&quot;"/>
@@ -80,20 +80,20 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp32/libraries/SPI/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp32/libraries/Wire}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp32/libraries/Wire/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/core/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/core/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/DallasTemperature}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/OneWire}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/PubSubClient}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/PubSubClient/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/SPI}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/SPI/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/U8g2}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/U8g2/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/WiFi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/WiFi/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/Wire}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/Wire/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/DallasTemperature}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/OneWire}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/PubSubClient}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/PubSubClient/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/SPI/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/U8g2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/U8g2/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/WiFi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/WiFi/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/Wire}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/Wire/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/DallasTemperature}&quot;"/>
@@ -127,20 +127,20 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp32/libraries/SPI/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp32/libraries/Wire}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/esp32/libraries/Wire/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/core/core}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/core/variant}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/DallasTemperature}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/OneWire}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/PubSubClient}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/PubSubClient/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/SPI}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/SPI/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/U8g2}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/U8g2/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/WiFi}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/WiFi/src}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/Wire}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/monitor/libraries/Wire/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/DallasTemperature}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/OneWire}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/PubSubClient}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/PubSubClient/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/SPI}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/SPI/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/U8g2}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/U8g2/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/WiFi}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/WiFi/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/Wire}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/Wire/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/core}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/core/variant}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/aquaponics_monitor/libraries/DallasTemperature}&quot;"/>
