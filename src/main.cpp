@@ -1,3 +1,9 @@
+/*
+
+	by Fábio Chiocchetti Guarita
+
+*/
+
 #include <Arduino.h>
 
 //Temperature reading service
