@@ -1,8 +1,14 @@
+#include <Arduino.h>
+
 //Temperature reading service
 #include "temperatureService.h"
 
+float pfTemperatures[MAX_ONE_WIRE_DEVICES];
+uint8_t pucTemperatureAddress[MAX_ONE_WIRE_DEVICES][8];
+bool bTempStarted;
+uint8_t ucNumberOfDevices;
+
 //OLED headers
-#include <Arduino.h>
 #include <U8g2lib.h>
 
 #ifdef U8X8_HAVE_HW_SPI
@@ -85,17 +91,17 @@ void draw(void) {
 	}
 
 	//Temperature
-	if (!temp_started) {
+	if (!bTempStarted) {
 		//Not initialized
 	} else {
 
-		for (int i = 0; i < numberOfDevices; i++) {
+		for (int i = 0; i < ucNumberOfDevices; i++) {
 
 			char addrStr[5];
 			char buff[100];
-			sprintf(addrStr, "%02X%02X", temp_addr[i][6], temp_addr[i][7]);
+			sprintf(addrStr, "%02X%02X", pucTemperatureAddress[i][6], pucTemperatureAddress[i][7]);
 
-			sprintf(buff, "T[%s]:%.2f C", addrStr, temp[i]);
+			sprintf(buff, "T[%s]:%.2f C", addrStr, pfTemperatures[i]);
 			u8g2.drawStr(0, 12 + 8 * i, buff);
 		}
 	}
@@ -239,7 +245,7 @@ void draw_loop(void *params) {
 void publish_loop(void *params) {
 
 	/* PUBLISH DATA SETUP */
-	pinMode(BUILTIN_LED, OUTPUT); // Initialize the BUILTIN_LED pin as an output
+//	pinMode(BUILTIN_LED, OUTPUT); // Initialize the BUILTIN_LED pin as an output
 	setup_wifi();
 	client.setServer(mqtt_server, 1883);
 	client.setCallback(callback);
@@ -253,41 +259,34 @@ void publish_loop(void *params) {
 		client.loop();
 
 		if (millis() - lastConnectionTime > POSTING_INTERVAL) {
-			if (temp_started)
-				mqttpublish(temp[0], temp[1]);
+			if (bTempStarted)
+				mqttpublish(pfTemperatures[0], pfTemperatures[1]);
 		}
 
-		delay(500);
+		delay(2000);
 
 	}
 
 }
 
-struct context {
-	int a;
-} * pctx;
+// service objects decalaration
+TemperatureReaderService * pxTemperatureService;
+
+// wrapper for temperature service loop
+void temp_loop(void * pvParameters){
+	pxTemperatureService->loop(pvParameters);
+}
 
 void setup(void) {
+
+	// instantiate services
+	pxTemperatureService = new TemperatureReaderService();
 
 	//start serial communication
 	Serial.begin(115200);
 
-	//Setup interprocess communication
-	SemaphoreHandle_t xSemaphoreBinTemperatureReady = xSemaphoreCreateBinary();
-	SemaphoreHandle_t xSemaphoreMutTempAddress = xSemaphoreCreateMutex();
+	delay(2000);
 
-
-	//Start tasks
-	xTaskCreatePinnedToCore(&draw_loop, // pvTaskCode – Pointer to the task function.
-			"DRAW LOOP",   // pcName – Debugging name of the task
-			2048,             // usStackDepth – Size of the stack for the task.
-			NULL, // pvParameters – Parameters for the task instance. This may be NULL.
-			4,                // uxPriority – Priority of the task instance.
-			NULL, // pxCreatedTask – Reference to the newly created task instance. This may be
-			1 // xCoreID - Which core to run on. Choices are: 0 (PRO CPU) or 1 (APP CPU) to "tskNO_AFFINITY".
-			);
-
-	/* READ TEMPERATURE LOOP TASK SETUP */
 	xTaskCreatePinnedToCore(&temp_loop, // pvTaskCode – Pointer to the task function.
 			"TEMPERATURE LOOP",   // pcName – Debugging name of the task
 			2048,             // usStackDepth – Size of the stack for the task.
@@ -297,7 +296,17 @@ void setup(void) {
 			0 // xCoreID - Which core to run on. Choices are: 0 (PRO CPU) or 1 (APP CPU) to "tskNO_AFFINITY".
 			);
 
-	/* PUBLISH DATA LOOP TASK SETUP */
+	delay(2000);
+/*
+	xTaskCreatePinnedToCore(&draw_loop, // pvTaskCode – Pointer to the task function.
+			"DRAW LOOP",   // pcName – Debugging name of the task
+			2048,             // usStackDepth – Size of the stack for the task.
+			NULL, // pvParameters – Parameters for the task instance. This may be NULL.
+			4,                // uxPriority – Priority of the task instance.
+			NULL, // pxCreatedTask – Reference to the newly created task instance. This may be
+			1 // xCoreID - Which core to run on. Choices are: 0 (PRO CPU) or 1 (APP CPU) to "tskNO_AFFINITY".
+			);
+*/
 	xTaskCreatePinnedToCore(&publish_loop, // pvTaskCode – Pointer to the task function.
 			"PUBLISH LOOP",   // pcName – Debugging name of the task
 			2048,             // usStackDepth – Size of the stack for the task.
@@ -310,7 +319,14 @@ void setup(void) {
 }
 
 void loop(void) {
-
-	delay(10000);
+/*
+	// run control loop
+	// get temperature data and send to display and publish loops
+	pxTemperatureService->getTemperature(pfTemperatures);
+	bTempStarted = pxTemperatureService->getServiceStarted();
+	pxTemperatureService->getTemperatureAddress((uint8_t *) pucTemperatureAddress);
+	ucNumberOfDevices = pxTemperatureService->getNumberOfDevices();
+*/
+	delay(500);
 
 }
