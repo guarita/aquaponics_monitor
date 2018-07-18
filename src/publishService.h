@@ -6,6 +6,6 @@
 #include <PubSubClient.h>
 
 // publish service task function
-void publish_loop(void * pvParameters);
+void vPublishServiceTask(void * pvParameters);
 
 #endif

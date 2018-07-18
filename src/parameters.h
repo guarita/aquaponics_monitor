@@ -15,8 +15,8 @@
 typedef struct params{
 
   /* Temperature Service Vars */
-  // Number of tempeprature reading devices found/considered
-  uint8_t ucNumberOfDevices;
+  // Number of temperature reading devices found/considered
+  uint8_t ucNumberOfDs18Devices;
 
   // flag indicating temperature service ready
   bool bTempStarted;
@@ -36,6 +36,10 @@ typedef struct params{
   // temperature device addresses
   uint8_t pucTemperatureAddress[MAX_ONE_WIRE_DEVICES][8];
 
+  /* Display Service Vars */
+  SemaphoreHandle_t xTemperatureDataAvailableForPublishing;
+  SemaphoreHandle_t xTemperatureDataMutex;
+  SemaphoreHandle_t xTemperatureDataAvailableForDisplay;
 
 } xParams_t;
 

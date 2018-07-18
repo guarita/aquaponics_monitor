@@ -17,7 +17,7 @@
 #include "parameters.h"
 
 // temperature service task function
-void temp_loop(void * pvParameters);
+void vTemperatureServiceTask(void * pvParameters);
 
 // function to print a device address
 void printAddress(DeviceAddress deviceAddress);

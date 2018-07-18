@@ -6,28 +6,27 @@
  *
  */
 
+#define DISPLAY_REFRESH_INTERVAL_MS       200
+
 U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, /* clock=*/15, /* data=*/4, /* reset=*/
 		16);
-
-void u8g2_prepare(void) {
-	u8g2.setFont(u8g2_font_6x10_tf);
-	u8g2.setFontRefHeightExtendedText();
-	u8g2.setDrawColor(1);
-	u8g2.setFontPosTop();
-	u8g2.setFontDirection(0);
-}
 
 void draw(void * pvParameters) {
 
   // Auxiliary vars
   xParams_t * pxParams = (xParams_t *) pvParameters; // convert from void* to xParams_t *
 
-	u8g2_prepare();
+	// Prepare u8g2 settings
+	u8g2.setFont(u8g2_font_6x10_tf);
+	u8g2.setFontRefHeightExtendedText();
+	u8g2.setDrawColor(1);
+	u8g2.setFontPosTop();
+	u8g2.setFontDirection(0);
 
-	//WIFI status
+	// WIFI status
 	int ss = 0; //wifi signal strength, 1 to 4
 
-	//Display connected AP SSID (or connection status)
+	// Display connected AP SSID (or connection status)
 	if (WiFi.status() != WL_CONNECTED) {
 		String msg;
 		switch (WiFi.status()) {
@@ -72,40 +71,58 @@ void draw(void * pvParameters) {
 				(ss >= (4 - i) ? h : 1));
 	}
 
-	//Temperature
-	if (!pxParams->bTempStarted) {
-		//Not initialized
+	// Display Temperature
+	if (!pxParams->bTempStarted || xSemaphoreTake(pxParams->xTemperatureDataAvailableForDisplay, (TickType_t) 10) != pdTRUE) {
+		//If temperature service not ready or no temperature data available, do nothing.
 	} else {
 
-		for (int i = 0; i < pxParams->ucNumberOfDevices; i++) {
+		// Take access to temperature data
+		if( xSemaphoreTake(pxParams->xTemperatureDataMutex, (TickType_t) 3000) == pdTRUE){
 
-			char addrStr[5];
-			char buff[100];
-			sprintf(addrStr, "%02X%02X", pxParams->pucTemperatureAddress[i][6], pxParams->pucTemperatureAddress[i][7]);
+			// Display temperature for each sensor
+			for (int i = 0; i < pxParams->ucNumberOfDs18Devices; i++) {
 
-			sprintf(buff, "T[%s]:%.2f C", addrStr, pxParams->pfTemperature[i]);
-			u8g2.drawStr(0, 12 + 8 * i, buff);
+				// Auxiliary vars
+				char addrStr[5];
+				char buff[100];
+
+				// Prepares address string
+				sprintf(addrStr, "%02X%02X", pxParams->pucTemperatureAddress[i][6], pxParams->pucTemperatureAddress[i][7]);
+
+				// Prints address and temperature
+				sprintf(buff, "T[%s]:%.2f C", addrStr, pxParams->pfTemperature[i]);
+				u8g2.drawStr(0, 12 + 8 * i, buff);
+			}
+
+			// Release access to temperature data
+			xSemaphoreGive(pxParams->xTemperatureDataMutex);
+
+		} else {
+			// Could not access temperature data. (Should never reach this)
 		}
+
 	}
 
 	//Status messages
 
 }
 
-void draw_loop(void * pvParameters) {
+void vDisplayServiceTask(void * pvParameters) {
 
-  xParams_t * pxParams = (xParams_t *) pvParameters; // convert from void* to xParams_t *
+	// AUXILIARY VARS
+	TickType_t xLastWakeTime; // store clock to guarantee periodic operation
+  xParams_t * pxParams = (xParams_t *) pvParameters; // convert from void * to xParams_t *
 
 	/* OLED SETUP */
 	u8g2.begin();
 
 	for (;;) {
 		/* OLED PICTURE LOOP */
+		vTaskDelayUntil(&xLastWakeTime, DISPLAY_REFRESH_INTERVAL_MS); // Set periodic
+
 		u8g2.clearBuffer();
 		draw(pvParameters);
 		u8g2.sendBuffer();
-
-		delay(1000);
 
 	}
 }

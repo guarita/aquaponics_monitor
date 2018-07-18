@@ -7,13 +7,15 @@
 
 #include "temperatureService.h"
 
+#define CYCLE_RATE_MS       1000
+#define MAX_COMMS_DELAY     2
 
-void temp_loop(void *pvParameters) {
+void vTemperatureServiceTask(void *pvParameters) {
 
 	// AUXILIARY VARS
-	DeviceAddress tempDeviceAddress; // We'll use this variable to store a found device address
-	xParams_t * pxParams = (xParams_t *) pvParameters; // convert from void* to xParams_t *
-	char buff[100]; 	// buffer for string operations
+	TickType_t xLastWakeTime; // store clock to guarantee periodic operation
+	DeviceAddress puTempDeviceAddress; // We'll use this variable to store a found device address
+	xParams_t * pxParams = (xParams_t *) pvParameters; // convert from void * to xParams_t *
 
 	// initialize temperature vector
 	for(int i = 0; i < MAX_ONE_WIRE_DEVICES; i++) pxParams->pfTemperature[i] = -100;
@@ -21,7 +23,7 @@ void temp_loop(void *pvParameters) {
 	//temperature ready starts false
 	pxParams->bServiceStarted = false;
 
-	// initialize mutex
+	// initialize 1-wire and sensors objects
 	pxParams->pxOneWire = new OneWire(ONE_WIRE_BUS);
 	pxParams->pxSensors = new DallasTemperature(pxParams->pxOneWire);
 
@@ -30,104 +32,90 @@ void temp_loop(void *pvParameters) {
 	Serial.println("Dallas Temperature IC Control Library");
 
 	// Start up the library
-	pxParams->pxSensors->begin();
+	Serial.println("Initializing 1-wire bus, searching devices...");
+	pxParams->pxSensors->begin(); // Initialize bus and search for devices
+	pxParams->pxSensors->setWaitForConversion(true); // Configure to wait temperature conversion
 
-	// Grab a count of devices on the wire
-	pxParams->ucNumberOfDevices = 3;//pxParams->pxSensors->getDeviceCount();
-
-	// locate devices on the bus
-	Serial.print("Locating devices...");
-
+	// Show count of DS18 devices on the wire
+	pxParams->ucNumberOfDs18Devices = pxParams->pxSensors->getDS18Count();
 	Serial.print("Found ");
-	Serial.print(pxParams->pxSensors->getDeviceCount(), DEC);
-	Serial.println(" devices.");
+	Serial.print(pxParams->ucNumberOfDs18Devices, DEC);
+	Serial.println(" DS18 devices.");
 
-	// report parasite power requirements
-	Serial.print("Parasite power is: ");
-	if (pxParams->pxSensors->isParasitePowerMode())
-		Serial.println("ON");
-	else
-		Serial.println("OFF");
+	// Loop through each device, print out address and set resolution.
+	for (int i = 0; i < pxParams->ucNumberOfDs18Devices; i++) {
 
-	// Loop through each device, print out address
-	for (int i = 0; i < pxParams->ucNumberOfDevices; i++) {
 		// Search the wire for address
-		if (pxParams->pxSensors->getAddress(tempDeviceAddress, i)) {
+		if (pxParams->pxSensors->getAddress(puTempDeviceAddress, i)) {
 			Serial.print("Found device ");
 			Serial.print(i, DEC);
 			Serial.print(" with address: ");
-			printAddress(tempDeviceAddress);
+			printAddress(puTempDeviceAddress);
 			Serial.println();
 
+			// set the resolution to TEMPERATURE_PRECISION bit
+			// (Each Dallas/Maxim device is capable of several different resolutions)
 			Serial.print("Setting resolution to ");
 			Serial.println(TEMPERATURE_PRECISION, DEC);
-
-			// set the resolution to TEMPERATURE_PRECISION bit (Each Dallas/Maxim device is capable of several different resolutions)
-			pxParams->pxSensors->setResolution(tempDeviceAddress, TEMPERATURE_PRECISION);
+			pxParams->pxSensors->setResolution(puTempDeviceAddress, TEMPERATURE_PRECISION);
 
 			Serial.print("Resolution actually set to: ");
-			Serial.print(pxParams->pxSensors->getResolution(tempDeviceAddress), DEC);
+			Serial.print(pxParams->pxSensors->getResolution(puTempDeviceAddress), DEC);
 			Serial.println();
+
 		} else {
 			Serial.print("Found ghost device at ");
 			Serial.print(i, DEC);
-			Serial.print(
-					" but could not detect address. Check power and cabling");
+			Serial.print(" but could not detect address. Check power and cabling");
 		}
 	}
 
 	for (;;) {
 
 		/* TEMPERATURE READING LOOP */
-		// call pxParams->pxSensors->requestTemperatures() to issue a global temperature request to all devices on the bus
+		vTaskDelayUntil(&xLastWakeTime, CYCLE_RATE_MS); // Set periodic
+
+		// Call pxParams->pxSensors->requestTemperatures() to issue a global temperature request to all devices on the bus
 		Serial.print("Requesting temperatures...");
-		pxParams->pxSensors->requestTemperatures(); // Send the command to get temperatures
-
-		delay(500);
-
+		pxParams->pxSensors->requestTemperatures(); // Waits for conversion
 		Serial.println("DONE");
 
-		// Loop through each device, print out temperature data
-		for (int i = 0; i < pxParams->ucNumberOfDevices; i++) {
-			if (!pxParams->bServiceStarted)
-				while (!pxParams->pxSensors->getAddress(tempDeviceAddress, i));
+		// Lock temperature data mutex
+		xSemaphoreTake(pxParams->xTemperatureDataMutex, 50);
+
+		// Loop through each device, update temperature vector
+		// add items to display and publish queues
+		for (int i = 0; i < pxParams->ucNumberOfDs18Devices; i++) {
 
 			// Search the wire for address
-			if (pxParams->pxSensors->getAddress(tempDeviceAddress, i)) {
-				// Output the device ID
-				Serial.print("Temperature for device: ");
-				Serial.println(i, DEC);
+			if (pxParams->pxSensors->getAddress(puTempDeviceAddress, i)) {
 
+				// Output the device ID
+				Serial.print("Temperature for device: "); Serial.println(i, DEC);
 				Serial.printf("temp[%d]", i);
 
-				// It responds almost immediately. Let's print out the data
-				printTemperature(tempDeviceAddress, pxParams); // Use a simple function to print out the data
-				pxParams->pfTemperature[i] = pxParams->pxSensors->getTempC(tempDeviceAddress);
-			}
-			//else ghost device! Check your power requirements and cabling
-		}
+				// Print temperature of device
+				printTemperature(puTempDeviceAddress, pxParams);
+				pxParams->pfTemperature[i] = pxParams->pxSensors->getTempC(puTempDeviceAddress);
 
-		if (!(pxParams->bServiceStarted)) {
-			delay(1000);
-			for (int i = 0; i < pxParams->ucNumberOfDevices; i++) {
-				if (pxParams->pxSensors->getAddress(tempDeviceAddress, i)) {
-					memcpy(pxParams->pucTemperatureAddress[i], tempDeviceAddress, 8);
-
-					Serial.printf("Temp Address[%02d]: ", i);
-					for (int j = 0; j < 8; j++) {
-						Serial.printf("%02X", pxParams->pucTemperatureAddress[i][j]);
-					}
-					Serial.print("\r\n");
-				}
-
-				delay(500);
+			} else {
+				//else ghost device! Check your power requirements and cabling
+				pxParams->pfTemperature[i] = -127; // Invalid data!
 			}
 		}
+
+		// Free temperature data mutex
+		xSemaphoreGive(pxParams->xTemperatureDataMutex);
 
 		//temperature reading tasks may use temperature
 		pxParams->bServiceStarted = true;
 
-		delay(500);
+		//  Flag temperature data ready for display Service
+		xSemaphoreGive(pxParams->xTemperatureDataAvailableForDisplay);
+
+		// Flag temperature data ready for publish Service
+		xSemaphoreGive(pxParams->xTemperatureDataAvailableForPublishing);
+
 	}
 
 }

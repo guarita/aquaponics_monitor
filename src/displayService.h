@@ -17,6 +17,6 @@
 #include <Wire.h>
 #endif
 // temperature display task function
-void draw_loop(void *params);
+void vDisplayServiceTask(void *params);
 
 #endif

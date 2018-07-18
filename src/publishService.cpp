@@ -1,5 +1,4 @@
 #include "publishService.h"
-
 #include "parameters.h"
 
 /*
@@ -49,11 +48,11 @@ void setup_wifi() {
 	Serial.println(WiFi.localIP());
 }
 
-void mqttpublish(float t1, float t2) {
+void mqttpublish(float t1, float t2, float t3) {
 
 	// Create data string to send to ThingSpeak
 	String data = String(
-			"field1=" + String(t1, DEC) + "&field2=" + String(t2, DEC));
+			"field1=" + String(t1, DEC) + "&field2=" + String(t2, DEC) + "&field3=" + String(t3, DEC));
 	int length = data.length();
 	char msgBuffer[length];
 	data.toCharArray(msgBuffer, length + 1);
@@ -116,13 +115,13 @@ void reconnect() {
  * task loops definitions
  */
 
-void publish_loop(void * pvParameters) {
+void vPublishServiceTask(void * pvParameters) {
+
 	// AUXILIARY VARS
+	TickType_t xLastWakeTime; // store clock to guarantee periodic operation
 	xParams_t * pxParams = (xParams_t *) pvParameters; // convert from void* to xParams_t *
 
-
 	/* PUBLISH DATA SETUP */
-//	pinMode(BUILTIN_LED, OUTPUT); // Initialize the BUILTIN_LED pin as an output
 	setup_wifi();
 	client.setServer(mqtt_server, 1883);
 	client.setCallback(callback);
@@ -130,17 +129,29 @@ void publish_loop(void * pvParameters) {
 	for (;;) {
 
 		/* PUBLISH DATA LOOP */
-		if (!client.connected()) {
-			reconnect();
-		}
-		client.loop();
+		vTaskDelayUntil(&xLastWakeTime, POSTING_INTERVAL); // Set periodic
 
+		// Take access to temperature data
+		xSemaphoreTake(pxParams->xTemperatureDataMutex, 3000);
+
+		if (!client.connected()) reconnect();
+
+		client.loop();
+/*
 		if (millis() - lastConnectionTime > POSTING_INTERVAL) {
 			if (pxParams->bTempStarted)
 				mqttpublish(pxParams->pfTemperature[0], pxParams->pfTemperature[1]);
 		}
+*/
 
-		delay(2000);
+		mqttpublish(
+			pxParams->pfTemperature[0],
+			pxParams->pfTemperature[1],
+			pxParams->pfTemperature[2]
+		);
+
+		// Release access to temperature data
+		xSemaphoreGive(pxParams->xTemperatureDataMutex);
 
 	}
 
