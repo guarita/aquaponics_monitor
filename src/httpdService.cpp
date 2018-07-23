@@ -66,8 +66,9 @@ void vHttpdServiceTask(void * pvParameters) {
                 client.print("Temperature[");
                 client.print(i,DEC);
                 client.print("]: ");
-                sprintf(buf, "%.1f", pxParams->pfTemperature[i]);
-                client.print("°C");
+                sprintf(buf, "%f", pxParams->pfTemperature[i]);
+								client.print(buf);
+								client.print(" C");
                 client.println("<br />");
 
               }
@@ -108,7 +109,7 @@ void vHttpdServiceTask(void * pvParameters) {
 
       // close the connection:
       client.stop();
-      Serial.println("HTTPD: client disonnected");
+      Serial.println("HTTPD: client disconnected");
 
     }
 

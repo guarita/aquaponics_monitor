@@ -7,7 +7,7 @@
 
 #include "temperatureService.h"
 
-#define CYCLE_RATE_MS       1000
+#define CYCLE_RATE_MS       10000
 #define MAX_COMMS_DELAY     2
 
 void vTemperatureServiceTask(void *pvParameters) {
@@ -37,7 +37,7 @@ void vTemperatureServiceTask(void *pvParameters) {
 	pxParams->pxSensors->setWaitForConversion(true); // Configure to wait temperature conversion
 
 	// Show count of DS18 devices on the wire
-	pxParams->ucNumberOfDs18Devices = pxParams->pxSensors->getDS18Count();
+	pxParams->ucNumberOfDs18Devices = 3; // pxParams->pxSensors->getDS18Count();
 	Serial.print("Found ");
 	Serial.print(pxParams->ucNumberOfDs18Devices, DEC);
 	Serial.println(" DS18 devices.");
@@ -101,6 +101,9 @@ void vTemperatureServiceTask(void *pvParameters) {
 			} else {
 				//else ghost device! Check your power requirements and cabling
 				pxParams->pfTemperature[i] = -127; // Invalid data!
+
+				Serial.print("Temperature for device: "); Serial.println(i, DEC);
+				Serial.printf("temp[%d] ", i);	Serial.println("Invalid!");
 			}
 		}
 
@@ -132,6 +135,6 @@ void printAddress(DeviceAddress deviceAddress) {
 // function to print the temperature for a device
 void printTemperature(DeviceAddress deviceAddress, xParams_t * pxParams) {
 	float tempC = pxParams->pxSensors->getTempC(deviceAddress);
-	Serial.print("Temp C: ");
-	Serial.println(tempC);
+	Serial.print(tempC);
+	Serial.println(" C");
 }
